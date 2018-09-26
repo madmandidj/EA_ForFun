@@ -1,6 +1,9 @@
-#include <ncurses.h>
-#include <unistd.h>
+// maybe can help: https://invisible-island.net/ncurses/ncurses-intro.html
+
+#include <curses.h>
+//#include <unistd.h>
 #include <time.h>
+#include <map>
 // #define _BSD_SOURCE
 // #define _XOPEN_SOURCE
 // #define _POSIX_C_SOURCE 199309L 
@@ -35,7 +38,7 @@ int main()
     cbreak();
     timeout(TICKRATE);
     keypad(stdscr, TRUE);
-    printw("PieceOfCakeSnake v. 1.0  -  Press x to quit...");
+    printw("PongCurses Test ! ! : - ) ");
     refresh();
     offsetx = (COLS - WINDOW_WIDTH) / 2;
     offsety = (LINES - WINDOW_HEIGHT) / 2;
@@ -131,14 +134,14 @@ public:
     Window(unsigned int _width, unsigned int _height, Window_ID _windowID);
     ~Window();
     unsigned int GetWindowWidth() const;
-    GetWindowHeight() const;
+    unsigned int GetWindowHeight() const;
     Pixel& GetPixel() const;
 protected:
 
 private:
     unsigned int m_width;
     unsigned int m_height;
-    PixelContainer m_pixelContainer;
+    std::map<Pixel, Coordinate> m_pixelContainer;
     Window_ID m_windowID;
 };
 
