@@ -55,7 +55,7 @@ public:
     {
         return m_x;
     }
-    void SetCoordinateX(unsigned int _newX);
+    void SetCoordinateX(unsigned int _newX)
     {
         m_x = _newX;
     }
@@ -71,10 +71,10 @@ public:
     {
         return m_x == _otherCoordinate.m_x && m_y == _otherCoordinate.m_y;
     }
-    bool operator<(const Coordinate& _otherCoordinate)
-    {
-        unsigned int 
-    }
+    // bool operator<(const Coordinate& _otherCoordinate)
+    // {
+    //     unsigned int 
+    // }
 protected:
 
 private:
@@ -120,7 +120,7 @@ private:
     unsigned int m_height;
     std::map<Pixel, Coordinate> m_pixelContainer;
     Window_ID m_windowID;
-    WINDOW* m_window
+    WINDOW* m_window;
 };
 
 
@@ -185,10 +185,10 @@ private:
 };
 
 
-int main()
-{
+// int main()
+// {
 
-}
+// }
 
 
 typedef struct coordinate
