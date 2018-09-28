@@ -39,6 +39,18 @@ typedef enum
     BALL
 }Object_ID;
 
+typedef enum
+{
+    U,
+    UR,
+    R,
+    DR,
+    D,
+    DL,
+    L,
+    UL
+}ObjMoveDirection;
+
 
 
 
@@ -96,8 +108,8 @@ public:
             for (unsigned int curX = 0; curX < m_width; ++curX)
             {
                 Coordinate curCoord(curX, curY);
-                Pixel curPixel(curCoord, curPixelID);
-                m_pixelContainer.insert(std::pair<Pixel, unsigned int>(curPixel, curPixelID));
+                Pixel* const curPixel = new Pixel(curCoord, curPixelID);
+                m_pixelContainer.insert(std::pair<unsigned int, Pixel* const>(curPixelID, curPixel));
                 ++curPixelID;
             }
         }
@@ -107,6 +119,14 @@ public:
     {
         if (this->m_window)
         {
+            std::map<unsigned int, Pixel* const>::iterator begin = m_pixelContainer.begin();
+            std::map<unsigned int, Pixel* const>::iterator end = m_pixelContainer.end();
+            while(begin != end)
+            {
+                delete begin->second;
+                m_pixelContainer.erase(begin);
+                begin = m_pixelContainer.begin();
+            }
             delwin(this->m_window);
         }
     }
@@ -126,16 +146,17 @@ public:
         //TODO: throw exception of coordinate is invalid or if character is invalid
         Coordinate curCoord(0, 0);
         Pixel curPixel(curCoord, _pixelID);
-        std::map<Pixel, unsigned int>::iterator it = m_pixelContainer.find(curPixel);
-        return it->first.GetCharacter();
+        std::map<unsigned int, Pixel* const>::iterator it = m_pixelContainer.find(_pixelID);
+        return it->second->GetCharacter();
     }
     void SetPixelChar(unsigned int _pixelID, unsigned char _newChar) 
     {
         //TODO: throw exception of coordinate is invalid or if character is invalid
         Coordinate curCoord(0, 0);
         Pixel curPixel(curCoord, _pixelID);
-        std::map<Pixel, unsigned int>::iterator it = m_pixelContainer.find(curPixel);
-        (static_cast<Pixel>(it->first)).SetCharacter(_newChar);
+        std::map<unsigned int, Pixel* const>::iterator it = m_pixelContainer.find(_pixelID);
+        // (static_cast<Pixel>(it->first).SetCharacter(_newChar);
+        it->second->SetCharacter(_newChar);
     }
     void RefreshWindow()
     {
@@ -151,7 +172,7 @@ private:
     const unsigned int m_offsetX;
     const unsigned int m_offsetY;
     const Window_ID m_windowID;
-    std::map<Pixel, unsigned int> m_pixelContainer;
+    std::map<unsigned int, Pixel* const> m_pixelContainer;
     WINDOW* m_window;
 };
 
@@ -188,16 +209,66 @@ private:
 class Object_t
 {
 public:
-    Object_t(Object_ID _objectId);
-    virtual ~Object_t();
-    bool Add(const Coordinate& _coordToAdd);
-    bool Remove(const Coordinate& _coordToRemove);
-    bool Find(const Coordinate& _coordToFind);
+    Object_t(Object_ID _objectId) : m_objectID(_objectId){}
+    virtual ~Object_t(){}
+    bool AddPixel(unsigned int _pixelID)
+    {
+        m_pixelIDContainer.insert(_pixelID);
+    }
+    bool RemovePixel(unsigned int _pixelID)
+    {
+        std::set<unsigned int>::iterator it = m_pixelIDContainer.find(_pixelID);
+        if (it != m_pixelIDContainer.end())
+        {
+            m_pixelIDContainer.erase(_pixelID);
+            return true;
+        }
+        return false;
+    }
+    bool Find(unsigned int _pixelID)
+    {
+        std::set<unsigned int>::iterator it = m_pixelIDContainer.find(_pixelID);
+        if (it != m_pixelIDContainer.end())
+        {
+            return true;
+        }
+        return false;
+    }
+    // void MoveObject(ObjMoveDirection _objMoveDirection)
+    // {
+    //     std::set<unsigned int>::iterator begin = m_pixelIDContainer.begin();
+    //     std::set<unsigned int>::iterator end = m_pixelIDContainer.end();
+    //     while (begin != end)
+    //     {
+    //         curID = *begin;
+    //         switch (_objMoveDirection)
+    //         {
+    //         case U:
+    //             *begin = curID -
+    //             break;
+    //         case UR:
+    //             break;
+    //         case R:
+    //             break;
+    //         case DR:
+    //             break;
+    //         case D:
+    //             break;
+    //         case DL:
+    //             break;
+    //         case L:
+    //             break;
+    //         case UL:
+    //             break;
+    //         default:
+    //             break;
+    //         }
+    //     }
+    }
 protected:
-    std::set<Coordinate> m_cooordinateContainer;
+    std::set<unsigned int> m_pixelIDContainer;
     Object_ID m_objectID;
 private:
-    
 };
 
 class PongCursesEngine
@@ -243,7 +314,7 @@ int main()
     refresh();
     // unsigned int offsetx = (COLS - WINDOW_WIDTH) / 2;
     // unsigned int offsety = (LINES - WINDOW_HEIGHT) / 2;
-    unsigned int offsetx = 1;
+    unsigned int offsetx = 0;
     unsigned int offsety = 1;
     Window firstWin(WINDOW_WIDTH, WINDOW_HEIGHT, offsetx, offsety, PLAY_WIN);
     WindowContainer winContainer;
@@ -251,8 +322,17 @@ int main()
     // Window dummy(PLAY_WIN);
     Window& firstWinPtr = winContainer.GetWindow(PLAY_WIN);
     // Window* playWinRef((winContainer.GetWindow(PLAY_WIN)));
-    firstWinPtr.RefreshWindow();
+    Object_t ball(BALL);
+    Coordinate initBallCoord(10,10);
+    Pixel pixel(initBallCoord, 0);
+
     curs_set(0);
+    firstWinPtr.RefreshWindow();
+    sleep(2);
+    
+    firstWinPtr->SetPixelChar(0, "*");
+    
+    firstWinPtr.RefreshWindow();
     sleep(2);
     endwin();
     return 0;
