@@ -21,16 +21,22 @@ Object_t::~Object_t()
 
 void Object_t::AddPixel(unsigned int _pixelID)
 {
-    if (_pixelID >= GetNumOfPixels())
-    {
-        return;
-    }
     unsigned int pixelCol = CalculatePixelCol(_pixelID);
     unsigned int pixelRow = CalculatePixelRow(_pixelID);
-    m_border_U = pixelRow < m_border_U ? pixelRow : m_border_U;
-    m_border_R = pixelCol > m_border_R ? pixelCol : m_border_R;
-    m_border_D = pixelRow > m_border_D ? pixelRow : m_border_U;
-    m_border_L = pixelCol < m_border_L ? pixelCol : m_border_L;
+    if (0 == GetNumOfPixels())
+    {
+        m_border_U = pixelRow;
+        m_border_R = pixelCol;
+        m_border_D = pixelRow;
+        m_border_L = pixelCol;
+    }
+    else
+    {
+        m_border_U = pixelRow < m_border_U ? pixelRow : m_border_U;
+        m_border_R = pixelCol > m_border_R ? pixelCol : m_border_R;
+        m_border_D = pixelRow > m_border_D ? pixelRow : m_border_U;
+        m_border_L = pixelCol < m_border_L ? pixelCol : m_border_L;
+    }
     m_pixelIDContainer.insert(_pixelID);
 }
 
@@ -55,7 +61,7 @@ bool Object_t::Find(unsigned int _pixelID)
     return false;
 }
 
-bool Object_t::GetNumOfPixels() const
+unsigned int Object_t::GetNumOfPixels() const
 {
     return m_pixelIDContainer.size();
 }
@@ -152,12 +158,9 @@ unsigned int Object_t::CalculatePixelCol(unsigned int _pixelID) const
     return _pixelID % m_parentWindowCols;
 }
 
-// std::ostream& operator<<(std::ostream&, const Object_t& _object)
-// {
-//     std::set<unsigned int>::iterator it = m_pixelIDContainer.begin(_pixelID);
-//     while (it != m_pixelIDContainer.end())
-//     {
-
-//     }
-// }
+std::ostream& operator<<(std::ostream& _os, const Object_t& _object)
+{
+    _os << "U = " << _object.GetBorder_U() << ", R = " << _object.GetBorder_R() << ", D = " << _object.GetBorder_D() << ", L = " << _object.GetBorder_L() << std::endl;
+    return _os;
+}
 

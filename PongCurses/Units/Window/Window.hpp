@@ -34,7 +34,7 @@ private:
     std::map<unsigned int, Pixel* const> m_pixelContainer;
 };
 
-std::ostream& operator<<(std::ostream&, const Window& _window);
+std::ostream& operator<<(std::ostream& _os, const Window& _window);
 
 
 

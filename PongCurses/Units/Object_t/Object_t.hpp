@@ -25,9 +25,13 @@ public:
     void AddPixel(unsigned int _pixelID);
     bool RemovePixel(unsigned int _pixelID);
     bool Find(unsigned int _pixelID);
-    bool GetNumOfPixels() const;
+    unsigned int GetNumOfPixels() const;
     Window::Window_ID GetParentWindowID() const;
     bool Move(unsigned int _amount, ObjMoveDirection _direction);
+    unsigned int GetBorder_U() const {return m_border_U;}
+    unsigned int GetBorder_R() const {return m_border_R;}
+    unsigned int GetBorder_D() const {return m_border_D;}
+    unsigned int GetBorder_L() const {return m_border_L;}
 protected:
     unsigned int CalculateNewPixelID(unsigned int _pixelID, ObjMoveDirection _direction) const;
     unsigned int CalculatePixelRow(unsigned int _pixelID) const;

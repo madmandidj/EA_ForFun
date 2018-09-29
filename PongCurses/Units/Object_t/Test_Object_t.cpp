@@ -26,10 +26,9 @@ int main()
     ball.AddPixel(pixel_2.GetID());
     ball.AddPixel(pixel_3.GetID());
     ball.AddPixel(pixel_4.GetID());
-
-    
-
-    std::cout << win_1 << std::endl;
+    std::cout << ball << std::endl;
+    ball.Move(1, Object_t::R);
+    std::cout << ball << std::endl;
     std::cout << std::endl << "Object_t PASSED TESTS" << std::endl << std::endl;
     return 0;
 }
