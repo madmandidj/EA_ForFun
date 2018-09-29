@@ -81,10 +81,10 @@ public:
     unsigned int GetX() const {return m_coordinate.GetCoordinateX();}
     unsigned int GetY() const {return m_coordinate.GetCoordinateY();}
     bool operator<(const Pixel& _otherPixel) const {return m_pixelID < _otherPixel.m_pixelID;}
-    bool operator==(unsigned int _pixelID) const {return m_pixelID == _pixelID;}
-    bool operator<(unsigned int _pixelID) const {return m_pixelID < _pixelID;}
-    bool operator==(const Coordinate& _coordinate) const {return m_coordinate == _coordinate;}
-    bool operator==(unsigned char _pixelChar) const {return m_pixelChar == _pixelChar;}
+    bool operator==(const Pixel& _otherPixel) const {return m_pixelID == _otherPixel.m_pixelID;}
+    // bool operator<(unsigned int _pixelID) const {return m_pixelID < _pixelID;}
+    // bool operator==(const Coordinate& _coordinate) const {return m_coordinate == _coordinate;}
+    // bool operator==(unsigned char _pixelChar) const {return m_pixelChar == _pixelChar;}
 protected:
 
 private:
@@ -113,7 +113,6 @@ public:
                 ++curPixelID;
             }
         }
-        // }
     }
     ~Window()
     {
@@ -157,6 +156,7 @@ public:
         std::map<unsigned int, Pixel* const>::iterator it = m_pixelContainer.find(_pixelID);
         // (static_cast<Pixel>(it->first).SetCharacter(_newChar);
         it->second->SetCharacter(_newChar);
+        mvwaddch(m_window, it->second->GetX(), it->second->GetY(), _newChar);
     }
     void RefreshWindow()
     {
@@ -196,10 +196,6 @@ public:
         }
         return (it->second);
     }
-    // Window& RemoveWindow(Window_ID _windowID)
-    // {
-
-    // }
 protected:
 
 private:
@@ -233,37 +229,6 @@ public:
             return true;
         }
         return false;
-    }
-    // void MoveObject(ObjMoveDirection _objMoveDirection)
-    // {
-    //     std::set<unsigned int>::iterator begin = m_pixelIDContainer.begin();
-    //     std::set<unsigned int>::iterator end = m_pixelIDContainer.end();
-    //     while (begin != end)
-    //     {
-    //         curID = *begin;
-    //         switch (_objMoveDirection)
-    //         {
-    //         case U:
-    //             *begin = curID -
-    //             break;
-    //         case UR:
-    //             break;
-    //         case R:
-    //             break;
-    //         case DR:
-    //             break;
-    //         case D:
-    //             break;
-    //         case DL:
-    //             break;
-    //         case L:
-    //             break;
-    //         case UL:
-    //             break;
-    //         default:
-    //             break;
-    //         }
-    //     }
     }
 protected:
     std::set<unsigned int> m_pixelIDContainer;
@@ -309,28 +274,23 @@ int main()
     noecho();
     cbreak();
     timeout(TICKRATE);
-    // keypad(stdscr, TRUE);
     printw("PongCurses Test ! ! : - ) ");
     refresh();
-    // unsigned int offsetx = (COLS - WINDOW_WIDTH) / 2;
-    // unsigned int offsety = (LINES - WINDOW_HEIGHT) / 2;
     unsigned int offsetx = 0;
     unsigned int offsety = 1;
     Window firstWin(WINDOW_WIDTH, WINDOW_HEIGHT, offsetx, offsety, PLAY_WIN);
     WindowContainer winContainer;
     winContainer.AddWindow(firstWin);
-    // Window dummy(PLAY_WIN);
     Window& firstWinPtr = winContainer.GetWindow(PLAY_WIN);
-    // Window* playWinRef((winContainer.GetWindow(PLAY_WIN)));
     Object_t ball(BALL);
     Coordinate initBallCoord(10,10);
     Pixel pixel(initBallCoord, 0);
 
     curs_set(0);
-    firstWinPtr.RefreshWindow();
+    // firstWinPtr.RefreshWindow();
     sleep(2);
     
-    firstWinPtr->SetPixelChar(0, "*");
+    firstWinPtr.SetPixelChar(0, '*');
     
     firstWinPtr.RefreshWindow();
     sleep(2);
