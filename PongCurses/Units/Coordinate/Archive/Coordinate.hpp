@@ -6,19 +6,16 @@ class Coordinate
 {
 public:
     Coordinate(unsigned int _x, unsigned int _y);
-    Coordinate(const Coordinate& _coordinate);
     ~Coordinate();
+    Coordinate(const Coordinate& _coordinate);
     unsigned int GetX() const;
-    unsigned int GetY() const;
-    void SetX(unsigned int _x) {m_x = _x;}
-    void SetY(unsigned int _y) {m_y = _y;}
-    bool operator<(const Coordinate& _otherCoordinate) const;
+    unsigned int GetY () const;
     bool operator==(const Coordinate& _otherCoordinate) const;
 protected:
 
 private:
-    unsigned int m_x;
-    unsigned int m_y;
+    const unsigned int m_x;
+    const unsigned int m_y;
 };
 
 std::ostream& operator<< (std::ostream& _os, const Coordinate& _coord);

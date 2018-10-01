@@ -1,44 +1,43 @@
 #include <iostream>
-#include "Window.hpp"
+#include <map>
+#include<memory>
+#include "../Object_t/Object_t.hpp"
 #include "../Pixel/Pixel.hpp"
+#include "Window.hpp"
 
-Window::Window(Window::Window_ID _windowID) : 
-    m_width(0), m_height(0), m_windowID(_windowID)
-{
+// Window::Window(Window::Window_ID _windowID) : 
+//     m_width(0), m_height(0), m_windowID(_windowID)
+// {
 
-}
+// }
 
 Window::Window(unsigned int _width, unsigned int _height, Window::Window_ID _windowID) :
     m_width(_width), m_height(_height), m_windowID(_windowID)
 {
-    // m_window = newwin(static_cast<int>(_height), static_cast<int>(_width), static_cast<int>(_offsetY), static_cast<int>(_offsetX));
-    unsigned int curPixelID = 0;
-    for (unsigned int curY = 0; curY < m_height; ++curY)
-    {
-        for (unsigned int curX = 0; curX < m_width; ++curX)
-        {
-            Coordinate curCoord(curX, curY);
-            Pixel* const curPixel = new Pixel(curCoord, curPixelID);
-            m_pixelContainer.insert(std::pair<unsigned int, Pixel* const>(curPixelID, curPixel));
-            ++curPixelID;
-        }
-    }
 }
 
 Window::~Window()
 {
-    // if (this->m_window)
+    // unsigned int numOfObjects = m_objectContainer.size();
+    // std::map<Object_t::Object_ID, SharedObjectPtr>::iterator begin = m_objectContainer.begin();
+    // std::map<Object_t::Object_ID, SharedObjectPtr>::iterator begin = m_objectContainer.end();
+    // while (begin != end)
     // {
-        std::map<unsigned int, Pixel* const>::iterator begin = m_pixelContainer.begin();
-        std::map<unsigned int, Pixel* const>::iterator end = m_pixelContainer.end();
-        while(begin != end)
-        {
-            delete begin->second;
-            m_pixelContainer.erase(begin);
-            begin = m_pixelContainer.begin();
-        }
-    //     delwin(this->m_window);
+    //     SharedObjectPtr curObj = begin->second;
+    //     std::map<Object_t::Object_ID, SharedObjectPtr>::iterator next = std::next(it);
+    //     delete curObj;
+    //     m_objectContainer.erase(begin->second);
+    //     begin = next;
     // }
+    // // std::map<unsigned int, Pixel* const>::iterator begin = m_pixelContainer.begin();
+    // // std::map<unsigned int, Pixel* const>::iterator end = m_pixelContainer.end();
+    // // while(begin != end)
+    // // {
+    // //     delete begin->second;
+    // //     m_pixelContainer.erase(begin);
+    // //     begin = m_pixelContainer.begin();
+    // // }
+    m_objectContainer.clear();
 }
 
 bool Window::operator<(const Window& _otherWindow) const 
@@ -68,57 +67,64 @@ unsigned int Window::GetHeight() const
 
 unsigned int Window::GetNumOfPixels() const
 {
-    return m_pixelContainer.size();
+    return m_width * m_height;
 }
 
-int Window::GetPixelID(unsigned int _x, unsigned int _y)
+Window::SharedObjectPtr Window::CreateObject(Object_t::Object_ID _objectID)
 {
-    if ((_x >= m_width) || (_y >= m_height))
+    SharedObjectPtr newObject (new Object_t(_objectID));
+    m_objectContainer.insert(std::pair<Object_t::Object_ID, SharedObjectPtr>(_objectID, newObject));
+    return newObject;
+}
+
+// SharedObjectPtr* const Window::RemoveObject(Object_t::Object_ID _objectID)
+// {
+
+// }
+
+Window::SharedObjectPtr Window::GetObject(Object_t::Object_ID _objectID)
+{
+    if (m_objectContainer.find(_objectID) != m_objectContainer.end())
     {
-        return -1;
+        return m_objectContainer.find(_objectID)->second;
     }
-    return (int)((_y * m_width) + _x);
+    return Window::SharedObjectPtr();
 }
 
-unsigned char Window::GetPixelChar(unsigned int _pixelID)  
+unsigned int Window::GetNumOfObjects() const
 {
-    //TODO: throw exception of coordinate is invalid or if character is invalid
-    Coordinate curCoord(0, 0);
-    Pixel curPixel(curCoord, _pixelID);
-    std::map<unsigned int, Pixel* const>::iterator it = m_pixelContainer.find(_pixelID);
-    return it->second->GetChar();
+    return m_objectContainer.size();
 }
 
-void Window::SetPixelChar(unsigned int _pixelID, unsigned char _newChar) 
-{
-    //TODO: throw exception of coordinate is invalid or if character is invalid
-    Coordinate curCoord(0, 0);
-    Pixel curPixel(curCoord, _pixelID);
-    std::map<unsigned int, Pixel* const>::iterator it = m_pixelContainer.find(_pixelID);
-    it->second->SetChar(_newChar);
-}
+
 
 std::ostream& operator<<(std::ostream& _os, const Window& _window)
 {
-    unsigned int numOfRows = _window.GetHeight();
-    unsigned int numOfCols = _window.GetWidth();
-
-    _os << std::endl;
-    for (unsigned int curRow = 0; curRow < numOfRows; ++curRow)
+    unsigned int numOfObjects = _window.GetNumOfObjects();
+    unsigned int curNumOfObjects = 0;
+    unsigned int curObjectID = 0;
+    while(curNumOfObjects < numOfObjects)
     {
-        _os << std::endl;
-        for (unsigned int curCol = 0; curCol < numOfCols; ++curCol)
+        Window::SharedObjectPtr curObjectPtr = const_cast<Window&>(_window).GetObject((Object_t::Object_ID)curObjectID);
+        if (!curObjectPtr)
         {
-            if (0 == curRow)
-            {
-                _os << const_cast<Window&>(_window).GetPixelChar(curCol);
-            }
-            else
-            {
-                _os << const_cast<Window&>(_window).GetPixelChar((numOfCols * curRow) + curCol);
-            }
+            ++curObjectID;
+            continue;
         }
+        _os << *curObjectPtr;
+        ++curObjectID;
+        ++curNumOfObjects;
     }
-    _os << std::endl;
+    // std::map<Object_t::Object_ID, Window::SharedObjectPtr>::iterator it = m_objectContainer.begin();
+    // std::map<Object_t::Object_ID, Window::SharedObjectPtr>::iterator end = m_objectContainer.end();
+    // while (it != end)
+    // {
+    //     unsigned int numOfPixels = it->second->GetNumOfPixels();
+    //     for (size_t curPixel = 0; curPixel < numOfPixels; ++curPixel)
+    //     {
+    //         _os << it->second->GetPixel(curPixel);
+    //     }
+    // }
+
     return _os;
 }

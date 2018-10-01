@@ -1,15 +1,20 @@
 #ifndef __PCURSES_OBJECT_T_HPP__
 #define __PCURSES_OBJECT_T_HPP__
 #include <iostream>
-#include "../Window/Window.hpp"
-#include <set>
+#include <map>
+#include <vector>
+#include <tr1/memory>
+#include "../Coordinate/Coordinate.hpp"
+#include "../Pixel/Pixel.hpp"
+// #include "../Window/Window.hpp"
 
 class Object_t
 {
 public:
+    typedef std::tr1::shared_ptr<Pixel> SharedPixelPtr;
     typedef enum
     {
-        BRICK_L,
+        BRICK_L = 0,
         BRICK_R,
         BALL
     }Object_ID;
@@ -20,33 +25,18 @@ public:
         D,
         L
     }ObjMoveDirection;
-    Object_t(Object_ID _objectId, const Window& _parentWindow);
+    Object_t(Object_ID _objectId);
     virtual ~Object_t();
-    void AddPixel(unsigned int _pixelID);
-    bool RemovePixel(unsigned int _pixelID);
-    bool Find(unsigned int _pixelID);
-    unsigned int GetNumOfPixels() const;
-    Window::Window_ID GetParentWindowID() const;
-    bool Move(unsigned int _amount, ObjMoveDirection _direction);
-    unsigned int GetBorder_U() const {return m_border_U;}
-    unsigned int GetBorder_R() const {return m_border_R;}
-    unsigned int GetBorder_D() const {return m_border_D;}
-    unsigned int GetBorder_L() const {return m_border_L;}
+    SharedPixelPtr CreatePixel(unsigned int _x, unsigned int _y, unsigned char _pixelChar);
+    SharedPixelPtr GetPixel(size_t _vectorIndex) const;
+    void RemovePixel(size_t _vectorIndex);
+    size_t GetNumOfPixels() const;
+    bool Move(unsigned int _amount, ObjMoveDirection _direction, unsigned int _parentWinWidth, unsigned int _parentWinHeight);
 protected:
-    unsigned int CalculateNewPixelID(unsigned int _pixelID, ObjMoveDirection _direction) const;
-    unsigned int CalculatePixelRow(unsigned int _pixelID) const;
-    unsigned int CalculatePixelCol(unsigned int _pixelID) const;
 
 protected:
-    std::set<unsigned int> m_pixelIDContainer;
     const Object_ID m_objectID;
-    const Window::Window_ID m_parentWindowID;
-    const unsigned int m_parentWindowRows;
-    const unsigned int m_parentWindowCols;
-    unsigned int m_border_U;
-    unsigned int m_border_R;
-    unsigned int m_border_D;
-    unsigned int m_border_L;
+    std::vector<SharedPixelPtr> m_pixelVector;
 private:
 };
 

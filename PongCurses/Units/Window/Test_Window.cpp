@@ -9,19 +9,14 @@ static unsigned int WIN_HEIGHT = 35;
 int main()
 {
     Window win_1(WIN_WIDTH, WIN_HEIGHT, Window::PLAY_WIN);
-    win_1.SetPixelChar(400, '*');
-    assert(' ' == win_1.GetPixelChar(399));
-    assert('*' == win_1.GetPixelChar(400));
-    assert(WIN_HEIGHT * WIN_WIDTH == win_1.GetNumOfPixels());
-    std::cout << win_1.GetPixelID(139, 34);
-    // for (unsigned int i = 0; i < win_1.GetNumOfPixels(); ++i)
-    // {
-    //     if (i%2 == 0)
-    //     {
-    //         win_1.SetPixelChar(i, '*');
-    //     }
-    // }
-    // std::cout << win_1;
+    Window::SharedObjectPtr ballPtr = win_1.CreateObject(Object_t::Object_ID::BALL);
+    ballPtr->CreatePixel(5, 5, '*');
+    ballPtr->CreatePixel(6, 5, '*');
+    std::cout << win_1;
+    ballPtr->Move(1, Object_t::ObjMoveDirection::R, WIN_WIDTH, WIN_HEIGHT);
+    std::cout << win_1;
+    ballPtr->Move(2, Object_t::ObjMoveDirection::L, WIN_WIDTH, WIN_HEIGHT);
+    std::cout << win_1;
     std::cout << std::endl << "Window PASSED TESTS" << std::endl << std::endl;
     return 0;
 }

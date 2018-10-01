@@ -24,19 +24,6 @@ unsigned int Coordinate::GetY() const
     return m_y;
 }
 
-bool Coordinate::operator<(const Coordinate& _otherCoordinate) const
-{
-    if (m_y < _otherCoordinate.m_y)
-    {
-        return true;
-    }
-    else if (m_y == _otherCoordinate.m_y)
-    {
-        return m_x < _otherCoordinate.m_x ? true : false;
-    }
-    return false;
-}
-
 bool Coordinate::operator==(const Coordinate& _otherCoordinate) const
 {
     return m_x == _otherCoordinate.m_x && m_y == _otherCoordinate.m_y;
@@ -44,7 +31,7 @@ bool Coordinate::operator==(const Coordinate& _otherCoordinate) const
 
 std::ostream& operator<< (std::ostream& _os, const Coordinate& _coord)
 {
-    _os << "Coordinate: X = " << _coord.GetX() << ", Y = " << _coord.GetY() << std::endl;
+    _os << "X = " << _coord.GetX() << ", Y = " << _coord.GetY() << std::endl;
     return _os;
 }
 

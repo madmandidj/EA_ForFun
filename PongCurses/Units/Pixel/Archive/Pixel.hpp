@@ -6,21 +6,22 @@
 class Pixel
 {
 public:
-    Pixel(unsigned int _x, unsigned int _y, unsigned char _pixelChar);
+    Pixel(unsigned int _x, unsigned int _y, unsigned int _pixelID);
+    Pixel(Coordinate _coordinate, unsigned int _pixelID);
     ~Pixel();
     unsigned char GetChar() const;
     void SetChar(unsigned char _newChar);
     unsigned int GetX() const;
-    void SetX(unsigned int _x) {m_coordinate.SetX(_x);}
     unsigned int GetY() const;
-    void SetY(unsigned int _y){m_coordinate.SetY(_y);}
+    unsigned int GetID() const;
     bool operator<(const Pixel& _otherPixel) const;
     bool operator==(const Pixel& _otherPixel) const;
 protected:
 
 private:
     unsigned char m_pixelChar;
-    Coordinate m_coordinate;
+    const Coordinate m_coordinate;
+    const unsigned int m_pixelID;
 };
 
 std::ostream& operator<< (std::ostream& _os, const Pixel& _pixel);

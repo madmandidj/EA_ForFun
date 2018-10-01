@@ -2,23 +2,36 @@
 #include<assert.h>
 #include "Coordinate.hpp"
 
+#define  NUM_OF_X 10
+#define NUM_OF_Y 3
 
 int main()
 {
-    unsigned int x1 = 10;
-    unsigned int y1 = 10;
-    unsigned int x2 = 17;
-    unsigned int y2 = 17;
-    Coordinate coord_1(x1,y1);
-    Coordinate coord_2(coord_1);
-    Coordinate coord_3(x2,y2);
+    unsigned int numOfCoords = NUM_OF_X * NUM_OF_Y;
+    Coordinate* coordsArr[NUM_OF_X][NUM_OF_Y];
+    for (size_t curX = 0; curX < NUM_OF_X; ++curX)
+    {
+        for (size_t curY = 0; curY < NUM_OF_Y; ++curY)
+        {
+            coordsArr[curX][curY] = new Coordinate(curX, curY);
+            assert(coordsArr[curX][curY]->GetX() == curX);
+            assert(coordsArr[curX][curY]->GetY() == curY);
+        }
+    }
 
-    assert(coord_1 == coord_2);
-    assert(!(coord_2 == coord_3));
-    assert(x1 == coord_2.GetX());
-    assert(y1 == coord_2.GetY());
-    assert(x2 == coord_3.GetX());
-    assert(y2 == coord_3.GetY());
+    for (size_t curCoord = 0; curCoord < numOfCoords - 1; ++curCoord)
+    {
+        assert(coordsArr[curCoord] < coordsArr[curCoord + 1]);
+    }
+
+    for (size_t curX = 0; curX < NUM_OF_X; ++curX)
+    {
+        for (size_t curY = 0; curY < NUM_OF_Y; ++curY)
+        {
+            delete coordsArr[curX][curY];
+        }
+    }
+
     std::cout << std::endl << "Coordinate PASSED TESTS" << std::endl << std::endl;
     return 0;
 }
