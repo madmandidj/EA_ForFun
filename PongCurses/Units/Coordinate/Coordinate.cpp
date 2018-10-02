@@ -1,6 +1,6 @@
 #include "Coordinate.hpp"
 
-Coordinate::Coordinate(unsigned int _x, unsigned int _y):m_x(_x), m_y(_y)
+Coordinate::Coordinate(unsigned int _column, unsigned int _row):m_column(_column), m_row(_row)
 {
 
 }
@@ -9,37 +9,37 @@ Coordinate::~Coordinate()
 
 }
 
-Coordinate::Coordinate(const Coordinate& _coordinate) : m_x(_coordinate.m_x), m_y(_coordinate.m_y)
+Coordinate::Coordinate(const Coordinate& _coordinate) : m_column(_coordinate.m_column), m_row(_coordinate.m_row)
 {
 
 }
 
-unsigned int Coordinate::GetX() const 
+unsigned int Coordinate::GetY() const  // Y is row
 {
-    return m_x;
+    return m_column;
 }
 
-unsigned int Coordinate::GetY() const 
+unsigned int Coordinate::GetX() const //X is Col
 {
-    return m_y;
+    return m_row;
 }
 
 bool Coordinate::operator<(const Coordinate& _otherCoordinate) const
 {
-    if (m_y < _otherCoordinate.m_y)
+    if (m_row < _otherCoordinate.m_row)
     {
         return true;
     }
-    else if (m_y == _otherCoordinate.m_y)
+    else if (m_row == _otherCoordinate.m_row)
     {
-        return m_x < _otherCoordinate.m_x ? true : false;
+        return m_column < _otherCoordinate.m_column ? true : false;
     }
     return false;
 }
 
 bool Coordinate::operator==(const Coordinate& _otherCoordinate) const
 {
-    return m_x == _otherCoordinate.m_x && m_y == _otherCoordinate.m_y;
+    return m_column == _otherCoordinate.m_column && m_row == _otherCoordinate.m_row;
 }
 
 std::ostream& operator<< (std::ostream& _os, const Coordinate& _coord)

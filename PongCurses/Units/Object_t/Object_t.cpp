@@ -25,7 +25,7 @@ Object_t::~Object_t()
 
 Object_t::SharedPixelPtr Object_t::CreatePixel(unsigned int _x, unsigned int _y, unsigned char _pixelChar)
 {
-    SharedPixelPtr newPixel(new Pixel(_x, _y, _pixelChar));
+    SharedPixelPtr newPixel(new Pixel(_y, _x, _pixelChar)); //Y is row, X is Col
     m_pixelVector.push_back(newPixel);
     return newPixel;
 }
@@ -62,8 +62,8 @@ bool Object_t::Move(unsigned int _amount, ObjMoveDirection _direction, unsigned 
     for (size_t curIndex = 0; curIndex < numOfPixels; ++curIndex)
     {
         SharedPixelPtr curPixel = m_pixelVector[curIndex];
-        unsigned int curX = curPixel->GetX();
-        unsigned int curY = curPixel->GetY();
+        unsigned int curX = curPixel->GetY();
+        unsigned int curY = curPixel->GetX();
         object_X_R =  curX > object_X_R ? curX : object_X_R;
         object_X_L =  curX < object_X_L ? curX : object_X_L;
         object_Y_U =  curY < object_Y_U ? curY : object_Y_U;

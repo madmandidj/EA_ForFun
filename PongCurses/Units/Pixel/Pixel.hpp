@@ -11,9 +11,9 @@ public:
     unsigned char GetChar() const;
     void SetChar(unsigned char _newChar);
     unsigned int GetX() const;
-    void SetX(unsigned int _x) {m_coordinate.SetX(_x);}
+    void SetX(unsigned int _x) {m_coordinate.SetY(_x);} // Y is row
     unsigned int GetY() const;
-    void SetY(unsigned int _y){m_coordinate.SetY(_y);}
+    void SetY(unsigned int _y){m_coordinate.SetX(_y);} // X is column
     bool operator<(const Pixel& _otherPixel) const;
     bool operator==(const Pixel& _otherPixel) const;
 protected:

@@ -2,7 +2,7 @@
 #include "../Coordinate/Coordinate.hpp"
 
 Pixel::Pixel(unsigned int _x, unsigned int _y, unsigned char _pixelChar) :
-    m_pixelChar(_pixelChar), m_coordinate(Coordinate(_x,_y))
+    m_pixelChar(_pixelChar), m_coordinate(Coordinate(_y,_x)) // Y is row, X is col
 {
 
 }
@@ -24,12 +24,12 @@ void Pixel::SetChar(unsigned char _newChar)
 
 unsigned int Pixel::GetX() const 
 {
-    return m_coordinate.GetX();
+    return m_coordinate.GetY(); //Y is Row
 }
 
 unsigned int Pixel::GetY() const 
 {
-    return m_coordinate.GetY();
+    return m_coordinate.GetX(); //X is Col
 }
 
 bool Pixel::operator<(const Pixel& _otherPixel) const 
