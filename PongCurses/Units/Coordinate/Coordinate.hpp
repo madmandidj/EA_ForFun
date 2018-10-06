@@ -8,10 +8,10 @@ public:
     Coordinate(unsigned int _column, unsigned int _row);
     Coordinate(const Coordinate& _coordinate);
     ~Coordinate();
-    unsigned int GetX() const;
-    unsigned int GetY() const;
-    void SetX(unsigned int _column) {m_column = _column;}
-    void SetY(unsigned int _row) {m_row = _row;}
+    unsigned int GetColumn() const;
+    unsigned int GetRow() const;
+    void SetColumn(unsigned int _column);
+    void SetRow(unsigned int _row);
     bool operator<(const Coordinate& _otherCoordinate) const;
     bool operator==(const Coordinate& _otherCoordinate) const;
 protected:

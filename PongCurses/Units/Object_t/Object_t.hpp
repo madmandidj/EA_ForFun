@@ -27,7 +27,7 @@ public:
     }ObjMoveDirection;
     Object_t(Object_ID _objectId);
     virtual ~Object_t();
-    SharedPixelPtr CreatePixel(unsigned int _x, unsigned int _y, unsigned char _pixelChar);
+    SharedPixelPtr CreatePixel(unsigned int _column, unsigned int _row, unsigned char _pixelChar);
     SharedPixelPtr GetPixel(size_t _vectorIndex) const;
     void RemovePixel(size_t _vectorIndex);
     size_t GetNumOfPixels() const;

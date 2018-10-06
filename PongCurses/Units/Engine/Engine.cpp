@@ -48,9 +48,9 @@ void Engine::RefreshScreen()
     curs_set(0);
     while (winItr != winItrEnd)
     {
-        werase(cursesWinItr->second);
+        wclear(cursesWinItr->second);
         box(cursesWinItr->second, 0 , 0);
-        wrefresh(cursesWinItr->second);
+        // wrefresh(cursesWinItr->second);
 
         // std::map<Object_t::Object_ID, SharedObjectPtr>::iterator objItr = 
 
@@ -71,7 +71,7 @@ void Engine::RefreshScreen()
             for(unsigned int curPixel = 0; curPixel < numOfPixels; ++curPixel)
             {
                 Object_t::SharedPixelPtr curPixelPtr = curObjectPtr->GetPixel(curPixel);
-                mvwaddch(cursesWinItr->second, curPixelPtr->GetX(), curPixelPtr->GetY(), curPixelPtr->GetChar());
+                mvwaddch(cursesWinItr->second, curPixelPtr->GetRow(), curPixelPtr->GetColumn(), curPixelPtr->GetChar());
             }
             ++curObjectID;
             ++curObjectNum;

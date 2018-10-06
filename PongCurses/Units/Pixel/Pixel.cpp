@@ -1,8 +1,8 @@
 #include "Pixel.hpp"
 #include "../Coordinate/Coordinate.hpp"
 
-Pixel::Pixel(unsigned int _x, unsigned int _y, unsigned char _pixelChar) :
-    m_pixelChar(_pixelChar), m_coordinate(Coordinate(_y,_x)) // Y is row, X is col
+Pixel::Pixel(unsigned int _column, unsigned int _row, unsigned char _pixelChar) :
+    m_pixelChar(_pixelChar), m_coordinate(Coordinate(_column,_row))
 {
 
 }
@@ -22,14 +22,24 @@ void Pixel::SetChar(unsigned char _newChar)
     m_pixelChar = _newChar;
 }
 
-unsigned int Pixel::GetX() const 
+unsigned int Pixel::GetColumn() const 
 {
-    return m_coordinate.GetY(); //Y is Row
+    return m_coordinate.GetColumn();
 }
 
-unsigned int Pixel::GetY() const 
+unsigned int Pixel::GetRow() const 
 {
-    return m_coordinate.GetX(); //X is Col
+    return m_coordinate.GetRow();
+}
+
+void Pixel::SetColumn(unsigned int _column)
+{
+    m_coordinate.SetColumn(_column);
+}
+
+void Pixel::SetRow(unsigned int _row) 
+{
+    m_coordinate.SetRow(_row);
 }
 
 bool Pixel::operator<(const Pixel& _otherPixel) const 
@@ -44,7 +54,7 @@ bool Pixel::operator==(const Pixel& _otherPixel) const
 
 std::ostream& operator<< (std::ostream& _os, const Pixel& _pixel)
 {
-    _os << "Pixel: X = " << _pixel.GetX() << ", Y = " << _pixel.GetY() << ", Char = " << _pixel.GetChar() << std::endl;
+    _os << "Pixel: Column = " << _pixel.GetColumn() << ", Row = " << _pixel.GetRow() << ", Char = " << _pixel.GetChar() << std::endl;
     return _os;
 }
 

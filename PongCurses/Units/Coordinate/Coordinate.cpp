@@ -14,14 +14,24 @@ Coordinate::Coordinate(const Coordinate& _coordinate) : m_column(_coordinate.m_c
 
 }
 
-unsigned int Coordinate::GetY() const  // Y is row
+unsigned int Coordinate::GetRow() const  
+{
+    return m_row;
+}
+
+unsigned int Coordinate::GetColumn() const 
 {
     return m_column;
 }
 
-unsigned int Coordinate::GetX() const //X is Col
+void Coordinate::SetColumn(unsigned int _column) 
 {
-    return m_row;
+    m_column = _column;
+}
+
+void Coordinate::SetRow(unsigned int _row) 
+{
+    m_row = _row;
 }
 
 bool Coordinate::operator<(const Coordinate& _otherCoordinate) const
@@ -44,7 +54,7 @@ bool Coordinate::operator==(const Coordinate& _otherCoordinate) const
 
 std::ostream& operator<< (std::ostream& _os, const Coordinate& _coord)
 {
-    _os << "Coordinate: X = " << _coord.GetX() << ", Y = " << _coord.GetY() << std::endl;
+    _os << "Coordinate: Column = " << _coord.GetColumn() << ", Y = " << _coord.GetRow() << std::endl;
     return _os;
 }
 

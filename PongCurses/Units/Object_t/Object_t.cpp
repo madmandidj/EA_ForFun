@@ -23,9 +23,9 @@ Object_t::~Object_t()
     m_pixelVector.clear();
 }
 
-Object_t::SharedPixelPtr Object_t::CreatePixel(unsigned int _x, unsigned int _y, unsigned char _pixelChar)
+Object_t::SharedPixelPtr Object_t::CreatePixel(unsigned int _column, unsigned int _row, unsigned char _pixelChar)
 {
-    SharedPixelPtr newPixel(new Pixel(_y, _x, _pixelChar)); //Y is row, X is Col
+    SharedPixelPtr newPixel(new Pixel(_column, _row, _pixelChar));
     m_pixelVector.push_back(newPixel);
     return newPixel;
 }
@@ -53,72 +53,72 @@ size_t Object_t::GetNumOfPixels() const
 
 bool Object_t::Move(unsigned int _amount, ObjMoveDirection _direction, unsigned int _parentWinWidth, unsigned int _parentWinHeight)
 {
-    unsigned int object_X_R = 0;
-    unsigned int object_X_L = _parentWinWidth - 1;
-    unsigned int object_Y_U = _parentWinHeight - 1;
-    unsigned int object_Y_D = 0;
+    unsigned int object_COL_R = 0;
+    unsigned int object_COL_L = _parentWinWidth - 1;
+    unsigned int object_ROW_U = _parentWinHeight - 1;
+    unsigned int object_ROW_D = 0;
     unsigned int numOfPixels = GetNumOfPixels();
 
     for (size_t curIndex = 0; curIndex < numOfPixels; ++curIndex)
     {
         SharedPixelPtr curPixel = m_pixelVector[curIndex];
-        unsigned int curX = curPixel->GetY();
-        unsigned int curY = curPixel->GetX();
-        object_X_R =  curX > object_X_R ? curX : object_X_R;
-        object_X_L =  curX < object_X_L ? curX : object_X_L;
-        object_Y_U =  curY < object_Y_U ? curY : object_Y_U;
-        object_Y_D =  curY > object_Y_D ? curY : object_Y_D;
+        unsigned int curRow = curPixel->GetRow();
+        unsigned int curCol = curPixel->GetColumn();
+        object_COL_R =  curCol > object_COL_R ? curCol : object_COL_R;
+        object_COL_L =  curCol < object_COL_L ? curCol : object_COL_L;
+        object_ROW_U =  curRow < object_ROW_U ? curRow : object_ROW_U;
+        object_ROW_D =  curRow > object_ROW_D ? curRow : object_ROW_D;
     }
 
     switch (_direction)
     {
         case R:
-            if (object_X_R + _amount < _parentWinWidth)
+            if (object_COL_R + _amount < _parentWinWidth)
             {
                     for (size_t curIndex = 0; curIndex < numOfPixels; ++curIndex)
                     {
                         SharedPixelPtr curPixel = m_pixelVector[curIndex];
-                        unsigned int curX = curPixel->GetX();
-                        curPixel->SetX(curX + _amount);
+                        unsigned int curCol = curPixel->GetColumn();
+                        curPixel->SetColumn(curCol + _amount);
                     }
                     return true;
             }
             return false;
         break;
         case L:
-            if (*((int*)&object_X_L) - *((int*)&_amount) >= 0)
+            if (*((int*)&object_COL_L) - *((int*)&_amount) >= 0)
             {
                     for (size_t curIndex = 0; curIndex < numOfPixels; ++curIndex)
                     {
                         SharedPixelPtr curPixel = m_pixelVector[curIndex];
-                        unsigned int curX = curPixel->GetX();
-                        curPixel->SetX(curX - _amount);
+                        unsigned int curCol = curPixel->GetColumn();
+                        curPixel->SetColumn(curCol - _amount);
                     }
                     return true;
             }
             return false;
         break;
         case U:
-            if (*((int*)&object_Y_U) - *((int*)&_amount) >= 0)
+            if (*((int*)&object_ROW_U) - *((int*)&_amount) >= 0)
             {
                     for (size_t curIndex = 0; curIndex < numOfPixels; ++curIndex)
                     {
                         SharedPixelPtr curPixel = m_pixelVector[curIndex];
-                        unsigned int curY = curPixel->GetY();
-                        curPixel->SetY(curY - _amount);
+                        unsigned int curRow = curPixel->GetRow();
+                        curPixel->SetRow(curRow - _amount);
                     }
                     return true;
             }
             return false;
         break;
         case D:
-            if (object_Y_D + _amount < _parentWinHeight)
+            if (object_ROW_D + _amount < _parentWinHeight)
             {
                     for (size_t curIndex = 0; curIndex < numOfPixels; ++curIndex)
                     {
                         SharedPixelPtr curPixel = m_pixelVector[curIndex];
-                        unsigned int curY = curPixel->GetY();
-                        curPixel->SetY(curY + _amount);
+                        unsigned int curRow = curPixel->GetRow();
+                        curPixel->SetRow(curRow + _amount);
                     }
                     return true;
             }
