@@ -31,7 +31,7 @@ public:
     SharedPixelPtr GetPixel(size_t _vectorIndex) const;
     void RemovePixel(size_t _vectorIndex);
     size_t GetNumOfPixels() const;
-    bool Move(unsigned int _amount, ObjMoveDirection _direction, unsigned int _parentWinWidth, unsigned int _parentWinHeight);
+    ObjMoveDirection Move(unsigned int _amount, ObjMoveDirection _direction, unsigned int _parentWinWidth, unsigned int _parentWinHeight);
 protected:
 
 protected:

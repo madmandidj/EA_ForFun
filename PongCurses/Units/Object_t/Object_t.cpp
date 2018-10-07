@@ -51,7 +51,7 @@ size_t Object_t::GetNumOfPixels() const
     return m_pixelVector.size();
 }
 
-bool Object_t::Move(unsigned int _amount, ObjMoveDirection _direction, unsigned int _parentWinWidth, unsigned int _parentWinHeight)
+Object_t::ObjMoveDirection Object_t::Move(unsigned int _amount, ObjMoveDirection _direction, unsigned int _parentWinWidth, unsigned int _parentWinHeight)
 {
     unsigned int object_COL_R = 0;
     unsigned int object_COL_L = _parentWinWidth - 1;
@@ -81,9 +81,9 @@ bool Object_t::Move(unsigned int _amount, ObjMoveDirection _direction, unsigned 
                         unsigned int curCol = curPixel->GetColumn();
                         curPixel->SetColumn(curCol + _amount);
                     }
-                    return true;
+                    return Object_t::R;
             }
-            return false;
+            return Object_t::L;
         break;
         case L:
             if (*((int*)&object_COL_L) - *((int*)&_amount) >= 0)
@@ -94,9 +94,9 @@ bool Object_t::Move(unsigned int _amount, ObjMoveDirection _direction, unsigned 
                         unsigned int curCol = curPixel->GetColumn();
                         curPixel->SetColumn(curCol - _amount);
                     }
-                    return true;
+                    return Object_t::L;
             }
-            return false;
+            return Object_t::R;
         break;
         case U:
             if (*((int*)&object_ROW_U) - *((int*)&_amount) >= 0)
@@ -107,9 +107,9 @@ bool Object_t::Move(unsigned int _amount, ObjMoveDirection _direction, unsigned 
                         unsigned int curRow = curPixel->GetRow();
                         curPixel->SetRow(curRow - _amount);
                     }
-                    return true;
+                    return Object_t::U;
             }
-            return false;
+            return Object_t::D;
         break;
         case D:
             if (object_ROW_D + _amount < _parentWinHeight)
@@ -120,9 +120,9 @@ bool Object_t::Move(unsigned int _amount, ObjMoveDirection _direction, unsigned 
                         unsigned int curRow = curPixel->GetRow();
                         curPixel->SetRow(curRow + _amount);
                     }
-                    return true;
+                    return Object_t::D;
             }
-            return false;
+            return Object_t::U;
         break;
 
     }

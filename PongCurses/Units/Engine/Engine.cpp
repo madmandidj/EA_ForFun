@@ -29,7 +29,7 @@ Engine::WindowSharedPtr Engine::CreateWindow(unsigned int _width, unsigned int _
 {
     WindowSharedPtr newWindow(new Window(_width, _height, _windowID));
     m_windowContainer.insert(std::pair<Window::Window_ID, WindowSharedPtr>(_windowID, newWindow));
-    WINDOW* newCursesWin = newwin(_height, _width, _offsetHeight, _offsetWidth);
+    WINDOW* newCursesWin = newwin(static_cast<int>(_height), static_cast<int>(_width), static_cast<int>(_offsetHeight), static_cast<int>(_offsetWidth));
     m_curseWinContainer.insert(std::pair<Window::Window_ID, WINDOW*>(_windowID, newCursesWin));
     return newWindow;
 }
@@ -44,7 +44,7 @@ void Engine::RefreshScreen()
     std::map<Window::Window_ID, WindowSharedPtr>::iterator winItr = m_windowContainer.begin();
     std::map<Window::Window_ID, WINDOW*>::iterator cursesWinItr = m_curseWinContainer.begin();
     std::map<Window::Window_ID, WindowSharedPtr>::iterator winItrEnd = m_windowContainer.end();
-    std::map<Window::Window_ID, WINDOW*>::iterator cursesWinItrEnd = m_curseWinContainer.end();
+    // std::map<Window::Window_ID, WINDOW*>::iterator cursesWinItrEnd = m_curseWinContainer.end();
     curs_set(0);
     while (winItr != winItrEnd)
     {

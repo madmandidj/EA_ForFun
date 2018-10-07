@@ -16,6 +16,10 @@
         "__split_buffer": "cpp",
         "string": "cpp",
         "vector": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "__bit_reference": "cpp",
+        "__tree": "cpp",
+        "bitset": "cpp",
+        "string_view": "cpp"
     }
 }

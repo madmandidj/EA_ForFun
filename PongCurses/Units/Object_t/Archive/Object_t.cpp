@@ -72,54 +72,91 @@ Window::Window_ID Object_t::GetParentWindowID() const
     return m_parentWindowID;
 }
 
+bool Object_t::CanMove(unsigned int _amount, ObjMoveDirection _direction)
+{
+        switch (_direction)
+        {
+            case U:
+                if (m_parentWindowRows < m_border_U - _amount)
+                {
+                    return false;
+                }
+                break;
+            case R:
+                if (m_parentWindowCols <= m_border_R + _amount)
+                {
+                    return false;
+                }
+                break;
+            case D:
+                if (m_parentWindowRows <= m_border_D + _amount)
+                {
+                    return false;
+                }
+                break;
+            case L:
+                if (m_parentWindowCols < m_border_L - _amount)
+                {
+                    return false;
+                }
+                break;
+            default:
+                break;
+        }
+    return true;
+}
+
 bool Object_t::Move(unsigned int _amount, ObjMoveDirection _direction)
 {
     //Check if valid move
     //Calculate
-
-    switch (_direction)
+    for (unsigned int curAmountNum = 0; curAmountNum < _amount; ++curAmountNum)
     {
-        case U:
-            if (0 == m_border_U)
-            {
-                return false;
-            }
-            --m_border_U;
-            --m_border_D;
-            break;
-        case R:
-            if (m_parentWindowCols - 1 == m_border_R)
-            {
-                return false;
-            }
-            ++m_border_R;
-            ++m_border_L;
-            break;
-        case D:
-            if (m_parentWindowRows - 1 == m_border_D)
-            {
-                return false;
-            }
-            ++m_border_U;
-            ++m_border_D;
-            break;
-        case L:
-            if (0 == m_border_L)
-            {
-                return false;
-            }
-            --m_border_R;
-            --m_border_L;
-            break;
-        default:
-            break;
-    }
 
-    std::set<unsigned int>::iterator it = m_pixelIDContainer.begin();
-    while (it != m_pixelIDContainer.end())
-    {
-        unsigned int newPixelID = CalculateNewPixelID(*it, _direction);
-        ++it;
+        switch (_direction)
+        {
+            case U:
+                // if (0 == m_border_U)
+                // {
+                //     return false;
+                // }
+                --m_border_U;
+                --m_border_D;
+                break;
+            case R:
+                // if (m_parentWindowCols - 1 == m_border_R)
+                // {
+                //     return false;
+                // }
+                ++m_border_R;
+                ++m_border_L;
+                break;
+            case D:
+                // if (m_parentWindowRows - 1 == m_border_D)
+                // {
+                //     return false;
+                // }
+                ++m_border_U;
+                ++m_border_D;
+                break;
+            case L:
+                // if (0 == m_border_L)
+                // {
+                //     return false;
+                // }
+                --m_border_R;
+                --m_border_L;
+                break;
+            default:
+                break;
+        }
+
+        std::set<unsigned int>::iterator it = m_pixelIDContainer.begin();
+        while (it != m_pixelIDContainer.end())
+        {
+            unsigned int newPixelID = CalculateNewPixelID(*it, _direction);
+            ++it;
+        }
     }
     return true;
 }
